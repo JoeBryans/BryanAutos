@@ -21,8 +21,9 @@ export async function GET(req) {
   // const fuelType=params.get("fuelType");
   const mileage = params.get("mileage");
   const price = params.get("price");
-  const priceRang = Number(price);
-  console.log("price", price);
+  const priceRang = Number(price) || 1000;
+  const Mil =Number(mileage) || 0;
+    console.log("price", price);
 
   const bodyType = params.get("bodyType");
   // const features = params.get("features");
@@ -43,14 +44,15 @@ export async function GET(req) {
     const cars = await prisma.car.findMany({
       where: {
         OR: [
-          { make: { contains: make, mode: "insensitive" } },
-          { model: { contains: model, mode: "insensitive" } },
+          { make: { contains: make, mode: "insensitive" }  },
+          { model: { contains: model, mode: "insensitive" }},
           { bodyType: { contains: bodyType, mode: "insensitive" } },
-          // { price: { lte: priceRang } },
-          // { mileage: { lte: mileage } },
-          // { features: features },
+          { price: { lte: priceRang } },
+          // { mileage: { lte: Mil } },
+          // { featured: true },
         ],
       },
+      distinct: ["model"],
     });
     console.log("cars", cars);
     return NextResponse.json(cars);

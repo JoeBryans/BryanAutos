@@ -42,9 +42,9 @@ export function SigninForm() {
       });
       if (res?.ok && res?.status === 200) {
         setLoading(false);
-        router.push("/");
+        history.back();
+        // router.push("/");
       }
-      console.log(res);
     } catch (error) {
       setError(error);
       setLoading(false);

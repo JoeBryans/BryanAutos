@@ -57,9 +57,13 @@ const testimonials = [
   },
 ];
 export function AnimatedTestimonial() {
- 
   return <AnimatedTestimonials testimonials={testimonials} />;
 }
 
-
 // echo "# BryanAutos" >> README.md
+// git init
+// git add README.md
+// git commit -m "first commit"
+// git branch -M main
+// git remote add origin https://github.com/JoeBryans/BryanAutos.git
+// git push -u origin main

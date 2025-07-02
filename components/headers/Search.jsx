@@ -92,8 +92,8 @@ const Search = () => {
           <option value="" className="text-neutral-content">
             Select body type
           </option>
-          {bodyType.map((item) => (
-            <option value={item.value} className="text-neutral-700">
+          {bodyType.map((item, i) => (
+            <option key={i} value={item.value} className="text-neutral-700">
               {item.name}
             </option>
           ))}
@@ -101,8 +101,9 @@ const Search = () => {
       </LabelInputContainer>
       <Button
         variant={""}
+        type="submit"
         className={
-          "  hover:bg-[#e64c46] bg-[#C73F3A] text-neutral-content mt-3 cursor-pointer md:w-max w-[95%]"
+          "  bg-[#0A1931]  hover:bg-[#1c355e] text-neutral-content mt-3 cursor-pointer md:w-max w-[95%]"
         }
         onClick={handleSubmit}
       >

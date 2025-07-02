@@ -7,9 +7,11 @@ import {
   IconArmchair2,
   IconAutomaticGearbox,
   IconRoad,
+  IconRoadOff,
 } from "@tabler/icons-react";
-import { LucideFuel } from "lucide-react";
+import { LucideFuel, User2Icon } from "lucide-react";
 import Link from "next/link";
+import CurrencyFormater from "../CurrencyFormater";
 // const fetchDatas = async () => {
 //   const res = await fetch("/api/vehicle/search");
 //   const data = await res.json();
@@ -28,56 +30,56 @@ export default function FilterResults({ data }) {
 async function Items({ Cars }) {
   // const Car = await fetchDatas();
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 space-y-10 items-center ">
+    <div className="w-full  mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-center justify-center">
       {Cars?.map((car, index) => (
-        <Card key={index} className="h-[400px] ">
-          <div className="p- group bg-white rounded-md shadow-md">
-            <CardContent className="flex flex-col items-start justify-center px-4 py-6">
-              <div className="h-36 w-full rounded-md">
-                <Image
-                  src={car?.image[0]}
-                  alt="car"
-                  height={500}
-                  width={500}
-                  className=" h-32 object-cover w-full rounded-md"
-                />
-              </div>
-              <div className="mt-5">
-                <div className="flex  text-zinc-700 items-center line-clamp-1 justify-start gap-2 overflow-hidden mt-3">
-                  <span className="text-xl font-semibold ">{car.year}</span>
-                  <span className="text-xl font-semibold ">{car.make}</span>
-                  <span className="text-xl font-semibold line-clamp-1">
-                    {car.model}
-                  </span>
-                </div>
-                <span className="text-xl text-zinc-700 font-semibold">
-                  ${car.price}
+        <Card key={index} className="h-max w-[280px] group relative mx-auto">
+          <CardContent className="flex flex-col items-start justify-center px-2 ">
+            <div className="h-44  w-full rounded-md">
+              <Image
+                src={car?.image[0]}
+                alt="car"
+                height={500}
+                width={500}
+                priority
+                className="h-44 object-cover w-full rounded-md"
+              />
+            </div>
+            <Link
+              href={`vehicle/${car.year}-${car.make}-${car.model}-${car.id}`}
+              className="flex flex-col text-zinc-700 items-start justify-start gap-1 mt-3 hover:underline"
+            >
+              <span className="text-lg font-medium">{car.make}</span>
+              <div className="flex text-zinc-700 items-center justify-start gap-1  hover:underline">
+                <span className="text-lg font-medium">{car.year}</span>
+                <span className="text-lg font-medium line-clamp-1">
+                  {car.model}
                 </span>
-                <div className="grid grid-cols-2 items-center justify-start gap-2 mt-2 text-zinc-700">
-                  <span className="flex gap-1 items-center text-xl font-semibold space-x-2">
-                    <IconRoad /> {car.mileage ? car.mileage + "m" : null}
-                  </span>
-                  <span className="flex gap-1 items-center text-xl font-semibold">
-                    <IconAutomaticGearbox /> {car.transmission}
-                  </span>
-                  <span className="flex gap-1 items-center text-xl font-semibold">
-                    <LucideFuel /> {car.fuelType}
-                  </span>
-                  <span className="flex gap-1 items-center text-xl font-semibold">
-                    <IconArmchair2 /> {car.seats}
-                  </span>
-                </div>
               </div>
-              <Link
-                href={`vehicle/${car?.id}`}
-                className="p-1.5 mt-4 w-full text-center rounded-lg cursor-pointer bg-[#0A1931] hover:bg-[#0A1931]/80 cusor-pointer text-white hover:text-white/80"
-              >
-                View Details
-              </Link>
-            </CardContent>
-          </div>
+            </Link>
+            <span className="text-xl text-orange-500 font-semibold">
+              <CurrencyFormater price={car.price} />
+            </span>
+            <div className="grid grid-cols-2 items-center capitalize justify-start gap-2 mt-2 text-zinc-700">
+              <span className="flex gap-1 items-center text-sm font-semibold space-x-2">
+                <IconRoadOff />{" "}
+                {car?.mileage === 0 ? "new" : car?.mileage + " " + "mil"}
+              </span>
+              <span className="flex gap-1 items-center text-sm font-semibold">
+                <IconAutomaticGearbox /> {car.transmission}
+              </span>
+              <span className="flex gap-1 items-center text-sm font-semibold">
+                <LucideFuel /> {car.fuelType}
+              </span>
+              <span className="flex gap-1 items-center text-sm font-semibold">
+                <User2Icon /> {car.seats}
+              </span>
+            </div>
+            {/* <Button className="mt-4 w-full cursor-pointer bg-[#0A1931] hover:bg-[#0A1931]/80 cusor-pointer">
+                                 View Details
+                               </Button> */}
+          </CardContent>
         </Card>
-      ))}{" "}
+      ))}
     </div>
   );
 }

@@ -58,9 +58,7 @@ const UserLinks = [
 const NavBar = () => {
   const currentPath = usePathname();
   const AdminDasboard = currentPath.startsWith("/admin");
-  console.log("currentPath", currentPath);
   const user = LoggedInUser();
-  console.log("user", user);
 
   return (
     <div className="w-full bg-white  shadow-md">

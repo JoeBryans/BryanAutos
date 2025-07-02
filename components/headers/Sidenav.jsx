@@ -15,7 +15,6 @@ import { AlignJustify } from "lucide-react";
 import Link from "next/link";
 
 export default function SideNave({ Links }) {
-  console.log("Links", Links);
 
   return (
     <Sheet>

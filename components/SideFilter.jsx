@@ -1,12 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { MobileFilter } from "./MobileFilter";
+import { Slider } from "./ui/slider";
+import { DualRangeSlider } from "./ui/dual-slider";
 
 const SideFilter = ({ searchParam }) => {
-  const [formData, setFormData] = useState(searchParam ? searchParam : {});
+  const [formData, setFormData] = useState({
+    keywords: searchParam?.keywords || "",
+    make: searchParam?.make || "",
+    // model: searchParam.model || "",
+    bodyType: searchParam?.bodyType || "",
+    price: searchParam?.price || 0,
+    year: searchParam?.year || 0,
+  });
+  // useEffect(() => {
+  //   const make = searchParam.make;
+  //   const model = searchParam.model;
+  //   const bodyType = searchParam.bodyType;
+  //   const price = searchParam.price;
+  //   const year = searchParam.year;
+  //   setFormData({
+  //     make: make || "",
+  //     model: model || "",
+  //     bodyType: bodyType?.length > 0 ? bodyType : "",
+  //     price: price || 0,
+  //     year: year || 0,
+  //   });
+  // }, []);
   console.log("side filter", formData);
   const router = useRouter();
   const handleChange = (e) => {
@@ -36,7 +59,7 @@ const SideFilter = ({ searchParam }) => {
               type="text"
               name="keywords"
               id="keywords"
-              value={formData.keywords}
+              value={formData?.keywords}
               onChange={handleChange}
               placeholder="Keywords"
             />
@@ -45,7 +68,7 @@ const SideFilter = ({ searchParam }) => {
             <select
               name="make"
               id="make"
-              value={formData.make}
+              value={formData?.make}
               onChange={handleChange}
               className="w-full md:w-[180px] border-2 p-1.5 rounded-md"
             >
@@ -57,27 +80,21 @@ const SideFilter = ({ searchParam }) => {
               <option value="bmw">BMW</option>
               <option value="ferrari">Ferrari</option>
             </select>
-            <h2>Model</h2>
-            <select
-              name="model"
-              value={formData.model}
-              id="model"
-              onChange={handleChange}
-              className="w-full md:w-[180px] border-2 p-1.5 rounded-md"
-            >
-              <option value="All">All</option>
-
-              <option value="model1">Model1</option>
-              <option value="model2">Model2</option>
-              <option value="model3">Model3</option>
-              <option value="model4">Model4</option>
-              <option value="model5">Model5</option>
-              <option value="model6">Model6</option>
-            </select>
+            <div>
+              <h2>Model</h2>
+              <Input
+                type="text"
+                value={formData?.model}
+                name="model"
+                id="model"
+                onChange={handleChange}
+                placeholder=" model"
+              />
+            </div>
             <h2>Body</h2>
             <select
               name="body"
-              value={formData.body}
+              value={formData?.body}
               id="body"
               onChange={handleChange}
               className="w-full md:w-[180px] border-2 p-1.5 rounded-md"
@@ -89,9 +106,28 @@ const SideFilter = ({ searchParam }) => {
               <option value="coupe">Coupe</option>
             </select>
             <h2>Price</h2>
+            {/* <Slider
+              defaultValue={formData?.price}
+              value={formData?.price}
+              max={999999}
+              step={1}
+              min={500}
+              onChageValue={handleChange}
+              name="price"
+              id="Price"
+            /> */}
+            {/* <DualRangeSlider
+              label={(value) => <span>{value}min</span>}
+              value={formData?.price}
+              onValueChange={handleChange}
+              min={2}
+              max={100}
+              step={1}
+            />*/}
+
             <Input
               type="number"
-              value={formData.price}
+              value={formData?.price}
               name="price"
               id="Price"
               onChange={handleChange}
@@ -101,7 +137,7 @@ const SideFilter = ({ searchParam }) => {
             <h2>Max Mileage (Used)</h2>
             <Input
               type="number"
-              value={formData.mileage}
+              value={formData?.mileage}
               name="mileage"
               id="mileage"
               onChange={handleChange}
@@ -115,36 +151,11 @@ const SideFilter = ({ searchParam }) => {
             >
               Filter
             </Button>
-            {/* <Button
-          variant={"outline"}
-          className="w-max mt-5 cursor-pointer"
-          onClick={() => setFormData({})}
-        >
-          Clear
-        </Button> */}
           </div>
-          {/* body Type */}
-          {/* <div>
-        <div>
-          <input type="checkbox" name="type" value="sedan" id="sedan" />
-          <label htmlFor="sedan">Sedan</label>
         </div>
-        <div>
-          <input type="checkbox" name="type" value="suv" id="suv" />
-          <label htmlFor="suv">SUV</label>
-        </div>
-        <div>
-          <input type="checkbox" name="type" value="hatchback" id="hatchback" />
-          <label htmlFor="hatchback">Hatchback</label>
-        </div>
-        <div>
-          <input type="checkbox" name="type" value="coupe" id="coupe" />
-          <label htmlFor="coupe">Coupe</label>
-        </div>
-      </div> */}
-        </div>
-        {/* <div>{}</div> */}
+        {/* body Type */}
       </div>
+      {/* </div> */}
       <MobileFilter
         handleSubmit={handleSubmit}
         handleChange={handleChange}

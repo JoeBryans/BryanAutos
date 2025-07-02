@@ -63,6 +63,8 @@ export function SignupForm() {
       } else {
         const error = await response.json();
         console.log("Error creating user", error);
+        setLoading(false);
+
         // alert(error.error);
       }
     } catch (error) {

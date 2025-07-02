@@ -4,6 +4,7 @@ import NavBar from "@/components/headers/NavBar";
 import Footer from "@/components/footer/Footer";
 import Session from "./Session";
 import ProviderStore from "./Provider";
+import BreadCumber from "@/components/BreadCumber";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,9 @@ export default function RootLayout({ children }) {
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
             <NavBar />
-            <main className="mb-10 min-h-[100vh]">{children}</main>
+            <main className="mb-10 min-h-[100vh]">
+              <BreadCumber/>
+              {children}</main>
             <Footer />
           </body>
         </Session>

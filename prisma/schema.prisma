@@ -22,7 +22,8 @@ datasource db {
 model User {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   email           String   @unique
-  name            String
+  firstname       String
+  lastname        String
   image           String?
   password        String
   phone           String?
@@ -40,13 +41,17 @@ model User {
 
 model Car {
   id             String            @id @default(auto()) @map("_id") @db.ObjectId
+  sku            String
   make           String
   model          String
   year           Int
-  interio_color  String
+  interio_color  String?
   external_color String
   image          Json?
   transmission   String
+  // driveType      String?
+  // engine         String?
+  // fuelEconomy    String?
   fuelType       String
   mileage        Int
   price          Int
@@ -54,7 +59,7 @@ model Car {
   bodyType       String
   description    String
   featured       Boolean           @default(false)
-  features       Json
+  features       Json?
   conditions     String            @default("new")
   saved          Boolean           @default(false)
   status         CarStatus         @default(Available)
@@ -74,6 +79,7 @@ model Car {
   @@index([bodyType])
   @@index([transmission])
   @@index([seats])
+  @@index([sku])
 }
 
 enum CarStatus {

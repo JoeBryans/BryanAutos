@@ -5,6 +5,8 @@ import { SendVerificationMail } from "@/lib/mailer";
 
 export async function POST(req) {
   const body = await req.json();
+  console.log("body", body);
+  
   const { email, password, firstname, lastname } = body;
   try {
     const existingUser = await prisma.user.findUnique({
@@ -25,6 +27,7 @@ export async function POST(req) {
     }&size=200`;
     // const expiresAt = new Date();
     // expiresAt.setDate(expiresAt.getDate() + 1); // Expires in 1 day
+    console.log("hashedPassword", hashedPassword);
 
     const newUser = await prisma.user.create({
       data: {
@@ -33,10 +36,11 @@ export async function POST(req) {
         firstname: firstname,
         lastname: lastname,
         image: imageUrl,
-        verificationCode: verifyToken,
+        verifyToken: verifyToken,
         emailVerified: false,
       },
     });
+    console.log("newUser", newUser);
     SendVerificationMail(email, firstname, verifyToken);
 
     return NextResponse.json(
@@ -44,6 +48,7 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
+    console.log("Error creating user", error);
     return NextResponse.json({ error: "Invalid request" }, { status: 500 });
   }
 }
