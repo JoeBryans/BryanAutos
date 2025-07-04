@@ -32,7 +32,6 @@ export async function GET(req) {
     
     const totalCars = await prisma.car.count();
     const totalPages = Math.ceil(totalCars / PageItems);
-    console.log("featured", featured);
     const currentPage = Number(page) || 1;
     return NextResponse.json({
       cars,

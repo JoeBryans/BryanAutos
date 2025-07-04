@@ -50,6 +50,8 @@ export const getByMake = async (make) => {
 
 
 
+
+
 export const getFeaturedCars = async () => {
   try {
     const res = await prisma.car.findMany({

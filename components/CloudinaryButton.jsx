@@ -83,7 +83,7 @@ const ClodnaryButton = ({
               max images to upload is {15}
             </span>
             {/* Display uploaded images */}
-            {uploadedImageUrls.length > 0 && (
+            {/* {uploadedImageUrls.length > 0 && (
               <div className="mt-8 w-full max-w-4xl">
                 <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
                   Uploaded Images:
@@ -105,7 +105,6 @@ const ClodnaryButton = ({
                       />
                       <div className="p-4">
                         <p className="text-sm text-gray-600 truncate">
-                          {/* Display filename for context, e.g., "my-image.jpg" */}
                           {url.substring(url.lastIndexOf("/") + 1)}
                         </p>
                       </div>
@@ -113,7 +112,7 @@ const ClodnaryButton = ({
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         );
       }}

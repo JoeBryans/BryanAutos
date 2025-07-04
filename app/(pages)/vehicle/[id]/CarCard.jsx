@@ -1,6 +1,7 @@
 "use client";
 import CurrencyFormater from "@/components/CurrencyFormater";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -19,6 +20,8 @@ import parse from "html-react-parser";
 import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import EMICalculator from "./EMI-Calculator";
 
 const CarCard = ({ data }) => {
   const [image, setImage] = React.useState("");
@@ -89,7 +92,7 @@ const CarCard = ({ data }) => {
           ))}
         </div> */}
       </div>
-      <div className="max-w-lg  w-full h-max  flex flex-col items-start   rounded-xl gap-0.5  ">
+      <div className="max-w-lg mx-auto w-full h-max  flex flex-col items-start   rounded-xl gap-0.5  ">
         <div className="flex  items-start justify-start gap-1 text-2xl  md:text-4xl my-2 font-bold text-zinc-700 ">
           <span>{data?.year}</span>
           <span>{data?.make}</span>
@@ -98,80 +101,31 @@ const CarCard = ({ data }) => {
         <span className="text-2xl font-bold text-orange-500 ">
           <CurrencyFormater price={data?.price} />
         </span>
-        <div className="flex gap-10">
-          <ul className="flex w-max capitalize flex-col font-semibold items-start justify-start  gap-4 mt-4 ">
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">External Color:</span>
-              <span
-                style={{
-                  color: iscolor,
-                }}
-              >
-                {data?.external_color}
-              </span>
-              <span
-                style={{
-                  background: iscolor,
-                }}
-                className={`h-5 w-10 rounded-sm `}
-              ></span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Condition:</span>
-              <span>{data?.conditions || "Brand new"}</span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Mileage:</span>
-              <span>{data?.mileage || "0"}</span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Transmission:</span>
-              <span>{data?.transmission}</span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Fuel Type:</span>
-              <span>{data?.fuelType}</span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Seats:</span>
-              <span>{data?.seats}</span>
-            </li>
-          </ul>
-          <ul className="flex w-max capitalize flex-col font-semibold items-start justify-start  gap-4 mt-4 ">
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Interior Color:</span>
-              <span
-                style={{
-                  color: interior,
-                }}
-              >
-                {data?.interio_color}
-              </span>
-              <span
-                style={{
-                  background: interior,
-                }}
-                className={`h-5 w-10 rounded-sm `}
-              ></span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Body Type:</span>
-              <span>{data?.interio_color}</span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Engine:</span>
-              <span>{data?.engine}</span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Drive Type:</span>
-              <span>{data?.driveType}</span>
-            </li>
-            <li className="flex items-center text-zinc-500 justify-start gap-1  ">
-              <span className="text-zinc-700 font-bold  ">Stock:</span>
-              <span>{data?.Stock}N6944</span>
-            </li>
-          </ul>
-        </div>
+        <Badge className="text-lg mt-2">{data?.bodyType}</Badge>
+        {/* EMI Calculator */}
+
+        <Dialog className="w-full">
+          <DialogTrigger>
+            <Card className={"my-2"}>
+              <CardContent className="flex flex-col items-start justify-start gap-1 ">
+                <h1 className="text-2xl uppercase font-bold text-zinc-700 ">
+                  loan repayment calculator
+                </h1>
+                <span className="text-sm text-orange-500 font-semibold">
+                  Estimated Monthly Payment $690.88 for 48 Months
+                </span>
+                <span className="text-zinc-700 font-sm  ">
+                  base on $0 down payment and 5% interest rate
+                </span>
+              </CardContent>
+            </Card>
+          </DialogTrigger>
+          <DialogContent>
+            <div className="w-2xl h-max overflow-scroll">
+              <EMICalculator price={data?.price} />
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* contact */}
         <div className="w-full flex flex-col items-center justify-center gap-2 ">
@@ -182,7 +136,7 @@ const CarCard = ({ data }) => {
             Check Availability
           </Button>
           <Link
-            href={`/test-drive`}
+            href={`/test-drive/${data?.id}`}
             type="submit"
             className="bg-[#FF6B35] font-bold text-white text-xl p-1.5 rounded-lg text-center  mt-5 hover:bg-[#ff7b4b]  cursor-pointer w-full"
           >
@@ -231,8 +185,16 @@ const CarCard = ({ data }) => {
           </TabsContent>
           <TabsContent
             value="features"
-            className={"max-w-4xl w-full"}
-          ></TabsContent>
+            className={"max-w-4xl w-full  text-zinc-600 flex flex-col gap-2"}
+          >
+            <span className="text-lg font-semibold  ">Features:</span>
+
+            {data?.features?.map((feature, index) => (
+              <div key={index} className="flex flex-col gap-2 items-start">
+                <span className="text-sm font-semibold  ">{feature}</span>
+              </div>
+            ))}
+          </TabsContent>
           <TabsContent
             value="review"
             className={"max-w-4xl w-full"}
@@ -240,6 +202,95 @@ const CarCard = ({ data }) => {
         </Tabs>
 
         {/* <article> {data?.description}</article> */}
+      </div>
+      {/* specs */}
+      <div className="w-full flex flex-col items-center justify-center gap-2 mt-10 ">
+        <h1 className="text-center font-bold text-4xl  text-zinc-700 relative z-20">
+          Car Specification
+        </h1>
+        <div className="w-full flex flex-wrap items-center mx-auto justify-center gap-1  ">
+          <ul className="flex max-w-[600px] w-full capitalize flex-col font-semibold items-start justify-start  gap-1  ">
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">External Color:</span>
+              <span>
+                {" "}
+                <span
+                  style={{
+                    color: iscolor,
+                  }}
+                >
+                  {data?.external_color}
+                </span>
+                <span
+                  style={{
+                    background: iscolor,
+                  }}
+                  className={`h-5 w-10 rounded-sm bg-red-600 `}
+                ></span>
+              </span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Condition:</span>
+              <span>{data?.conditions || "Brand new"}</span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Mileage:</span>
+              <span>{data?.mileage || "0"}</span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Transmission:</span>
+              <span>{data?.transmission}</span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Fuel Type:</span>
+              <span>{data?.fuelType}</span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Seats:</span>
+              <span>{data?.seats}</span>
+            </li>
+          </ul>
+          <ul className="flex max-w-[600px] w-full capitalize flex-col font-semibold items-start justify-start  gap-1  ">
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Interior Color:</span>
+              <span>
+                <span
+                  style={{
+                    color: interior,
+                  }}
+                >
+                  {data?.interior_color}
+                </span>
+                <span
+                  style={{
+                    background: interior,
+                  }}
+                  className={`h-5 w-10 rounded-sm `}
+                ></span>
+              </span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Body Type:</span>
+              <span>{data?.bodyType}</span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Engine:</span>
+              <span>{data?.engine}</span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Drive Type:</span>
+              <span>{data?.driveType}</span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">sku:</span>
+              <span>{data?.sku}</span>
+            </li>
+            <li className="flex justify-between items-center bg-zinc-100 rounded-lg p-1.5 text-zinc-600  w-full  ">
+              <span className="text-zinc-700 font-bold  ">Stock:</span>
+              <span>{data?.Stock}Available</span>
+            </li>
+          </ul>
+        </div>{" "}
       </div>
     </div>
   );

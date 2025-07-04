@@ -15,7 +15,7 @@ const RelatedCars = ({ relatedCars }) => {
     router.push(`/vehicle/${car.year}-${car.make}-${car.model}-${car.id}`);
   };
   return (
-    <div className="w-full flex  flex-col items-center justify-center gap-10 my-14 mx-auto">
+    <div className="w-full flex   flex-col items-center justify-center gap-10 my-14 mx-auto">
       <h1 className="text-center font-bold text-4xl  text-zinc-800 relative z-20">
         Related Cars
       </h1>

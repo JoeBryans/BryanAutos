@@ -5,7 +5,7 @@ import RelatedCars from "./relatedCars";
 import prisma from "@/lib/db";
 import { getRelatedCars } from "@/action/action";
 import { Suspense } from "react";
-import { SkeletonCard } from "@/components/ui/Loader";
+import { SkeletonCard, SkeletonImage } from "@/components/ui/Loader";
 
 const Page = async ({ params }) => {
   const { id } = await params;
@@ -24,10 +24,10 @@ const Page = async ({ params }) => {
       <div className="max-w-7xl  mx-auto w-full flex flex-col items-start justify-center gap-2  my-14">
         <Suspense
           fallback={
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-center justify-center">
-              {[1, 2, 3, 4, 5, 6, 8, 7].map((_, i) => (
-                <SkeletonCard key={i} />
-              ))}
+            <div className="w-full absolute left-0 h-[100vh] top-0 flex mx-auto justify-center bg-black opacity-35">
+              <div className="my-44">
+                <SkeletonImage />
+              </div>
             </div>
           }
         >

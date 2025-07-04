@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,8 @@ import CloudinaryButton from "@/components/CloudinaryButton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { generatedFormData } from "@/hooks/store/slice/Slice";
 import { useDispatch, useSelector } from "react-redux";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ro } from "date-fns/locale";
 // const ReactQuill = dynamic(() => import("react-quill"), {
 //   ssr: false, // This is the crucial part
 //   loading: () => <p>Loading payment button...</p>, // Optional: show a loading state
@@ -32,7 +34,7 @@ const schema = yup.object({
   make: yup.string().required("Make is required"),
   model: yup.string().required("Model is required"),
   year: yup.number().required("Year is required"),
-  interio_color: yup.string().required("Color is required"),
+  interior_color: yup.string().required("Color is required"),
   transmission: yup.string().required("Transmission is required"),
   fuelType: yup.string().required("Fuel Type is required"),
   mileage: yup.number().required("Mileage is required"),
@@ -40,7 +42,9 @@ const schema = yup.object({
   seats: yup.number().required("Seats is required"),
   bodyType: yup.string().required("Body Type is required"),
   description: yup.string().required("Description is required"),
-  features: yup.boolean().required("Features is required"),
+  features: yup.array(),
+  sku: yup.string(),
+  featured: yup.boolean().required("Featured is required"),
   external_color: yup.string().required("External Color is required"),
 });
 
@@ -56,9 +60,9 @@ export function VehicleForm() {
   const dispatch = useDispatch();
   const router = useRouter();
   // generate form data from carImage
-  // const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState([]);
   // cloudinary
-  console.log("formData", carData);
+  console.log("formData", formData);
 
   const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
   const images = uploadedImageUrls.map((url, index) => {
@@ -108,10 +112,26 @@ export function VehicleForm() {
     reader.readAsDataURL(file);
   };
   useEffect(() => {
-    if (carData) {
+    if (formData) {
+      setValue("make", formData?.make);
+      setValue("model", formData?.model);
+      setValue("year", formData?.year);
+      setValue("interior_color", formData?.interior_color);
+      setValue("transmission", formData?.transmission);
+      setValue("fuelType", formData?.fuel_type);
+      setValue("mileage", formData?.mileage);
+      setValue("price", formData?.price);
+      setValue("seats", formData?.seats);
+      setValue("bodyType", formData?.body_style);
+      setValue("featured", formData?.features?.length > 0 ? true : false);
+      setValue("features", formData?.features);
+      setValue("external_color", formData?.external_color);
+      setValue("description", formData?.description);
+
       setActiveTab("form");
     }
-  }, [carData]);
+    router.refresh();
+  }, [formData]);
 
   // handlePredition
   const handlePredition = async () => {
@@ -128,8 +148,8 @@ export function VehicleForm() {
         }),
       });
       const resJson = await res.json();
-      // setFormData(resJson);
-      dispatch(generatedFormData(resJson));
+      setFormData(resJson);
+
       if (res?.ok && res?.status === 200) {
         setLoading(false);
       }
@@ -143,25 +163,26 @@ export function VehicleForm() {
   const {
     register,
     handleSubmit,
-    watch,
+    setValue,
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      make: carData?.make,
-      model: carData?.model,
-      year: carData?.year,
-      interio_color: carData?.interior_color,
-      transmission: carData?.transmission,
-      fuelType: carData?.fuel_type,
-      mileage: carData?.mileage,
-      price: carData?.price,
-      seats: carData?.seats,
-      bodyType: carData?.body_style,
-      // features: carData?.features ,
-      external_color: carData?.external_color,
-      description: carData?.description,
-    },
+    // defaultValues: {
+    //   make: carData?.make,
+    //   model: carData?.model,
+    //   year: carData?.year,
+    //   interior_color: carData?.interior_color,
+    //   transmission: carData?.transmission,
+    //   fuelType: carData?.fuel_type,
+    //   mileage: carData?.mileage,
+    //   price: carData?.price,
+    //   seats: carData?.seats,
+    //   bodyType: carData?.body_style,
+    //   featured: carData?.features?.length > 0 ? true : false,
+    //   features: carData?.features,
+    //   external_color: carData?.external_color,
+    //   description: carData?.description,
+    // },
     resolver: yupResolver(schema),
   });
 
@@ -279,16 +300,16 @@ export function VehicleForm() {
                 )}
               </LabelInputContainer>
               <LabelInputContainer className={"w-full"}>
-                <Label htmlFor="interio_color">Interior Color</Label>
+                <Label htmlFor="interior_color">Interior Color</Label>
                 <Input
                   className={"w-full"}
-                  id="interio_color"
+                  id="interior_color"
                   type="text"
-                  {...register("interio_color")}
+                  {...register("interior_color")}
                 />
-                {errors.interio_color && (
+                {errors.interior_color && (
                   <p className="text-red-500 text-xs italic">
-                    {errors.interio_color.message}
+                    {errors.interior_color.message}
                   </p>
                 )}
               </LabelInputContainer>
@@ -366,16 +387,17 @@ export function VehicleForm() {
               </LabelInputContainer>
 
               <LabelInputContainer className={"w-full"}>
-                <Label htmlFor="features">Features</Label>
+                <Label htmlFor="sku">Sku</Label>
                 <Input
                   className={"w-full"}
-                  id="features"
+                  id="sku"
                   type="text"
-                  {...register("features")}
+                  // placeholder="Tyler Bee"
+                  {...register("sku")}
                 />
-                {errors.features && (
+                {errors.sku && (
                   <p className="text-red-500 text-xs italic">
-                    {errors.features.message}
+                    {errors.sku.message}
                   </p>
                 )}
               </LabelInputContainer>
@@ -390,6 +412,33 @@ export function VehicleForm() {
                 {errors.external_color && (
                   <p className="text-red-500 text-xs italic">
                     {errors.external_color.message}
+                  </p>
+                )}
+              </LabelInputContainer>
+              <LabelInputContainer
+                className={"w-full flex flex-row items-center gap-3"}
+              >
+                <Label htmlFor="external_color">Featured</Label>
+                <Controller
+                  name="featured"
+                  control={control}
+                  rules={{
+                    required: "featured is required",
+                  }}
+                  render={({ field }) => (
+                    <Checkbox
+                      id="featured"
+                      label="Featured"
+                      name="featured"
+                      className={"w-6 h-6 checked:bg-blue-600"}
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+                {errors.featured && (
+                  <p className="text-red-500 text-xs italic">
+                    {errors.featured.message}
                   </p>
                 )}
               </LabelInputContainer>
@@ -488,11 +537,13 @@ export function VehicleForm() {
                 </LabelInputContainer>
               ) : (
                 <div>
-                  <img
-                    src={carImage}
-                    alt="carImage"
-                    className="w-full h-full object-cover"
-                  />
+                  <div className="max-w-xl w-full h-full">
+                    <img
+                      src={carImage}
+                      alt="carImage"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <div className="flex justify-between items-center gap-5">
                     <Button
                       variant={"outline"}

@@ -23,6 +23,7 @@ export async function POST(req) {
     features,
     external_color,
   } = body;
+
   try {
     const newCar = await prisma.car.create({
       data: {
@@ -33,6 +34,8 @@ export async function POST(req) {
 
     return NextResponse.json(newCar);
   } catch (error) {
+    console.log("error", error);
+    
     return NextResponse.json({ error: "Invalid request" }, { status: 500 });
   }
 }

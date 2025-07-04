@@ -37,20 +37,21 @@ model User {
   saved        UserSavedCar[]
   reservations UserReservation[]
   // cars      Car[]
+  TestDrive    TestDrive[]
 }
 
 model Car {
   id             String            @id @default(auto()) @map("_id") @db.ObjectId
-  sku            String
+  sku            String?
   make           String
   model          String
   year           Int
-  interio_color  String?
+  interior_color String?
   external_color String
   image          Json?
   transmission   String
-  // driveType      String?
-  // engine         String?
+  driveType      String?
+  engine         String?
   // fuelEconomy    String?
   fuelType       String
   mileage        Int
@@ -67,6 +68,7 @@ model Car {
   reservations   UserReservation[]
   // Deler     User     @relation(fields: [DelerId], references: [id])
   // DelerId   String   @unique
+  TestDrive      TestDrive[]
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 
@@ -105,4 +107,22 @@ model UserReservation {
   user   User   @relation(fields: [userId], references: [id])
   carId  String @db.ObjectId
   car    Car    @relation(fields: [carId], references: [id])
+}
+
+model TestDrive {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId         String   @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id])
+  carId          String   @db.ObjectId
+  car            Car      @relation(fields: [carId], references: [id])
+  selectedDate   DateTime
+  selectedTime   String?
+  email          String?
+  additionalNote String?
+  desiredVehicle String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([carId])
 }

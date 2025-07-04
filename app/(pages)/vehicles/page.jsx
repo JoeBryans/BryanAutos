@@ -20,7 +20,7 @@ const Vehicles = async ({ searchParams }) => {
         <SideFilter searchParam={searchParam} />
         {/* <Filter searchParam={searchParam} /> */}
 
-        <div className="mt-10  md:mt-1">
+        <div className="mt-10 mx-auto  md:mt-1">
           <Suspense
             fallback={
               <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-center justify-center">

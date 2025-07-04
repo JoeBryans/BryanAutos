@@ -340,17 +340,17 @@ export function VehicleForm() {
               </LabelInputContainer>
 
               <LabelInputContainer className={"w-full"}>
-                <Label htmlFor="features">Features</Label>
+                <Label htmlFor="features">Sku</Label>
                 <Input
                   className={"w-full"}
-                  id="features"
+                  id="sku"
                   // placeholder="Tyler Bee"
                   type="text"
-                  {...register("features")}
+                  {...register("sku")}
                 />
-                {errors.features && (
+                {errors.sku && (
                   <p className="text-red-500 text-xs italic">
-                    {errors.features.message}
+                    {errors.sku.message}
                   </p>
                 )}
               </LabelInputContainer>

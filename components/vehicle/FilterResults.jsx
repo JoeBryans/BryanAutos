@@ -3,13 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../ui/button";
 // import { Cars } from "../home/Carousel";
 import Image from "next/image";
-import {
-  IconArmchair2,
-  IconAutomaticGearbox,
-  IconRoad,
-  IconRoadOff,
-} from "@tabler/icons-react";
-import { LucideFuel, User2Icon } from "lucide-react";
+import { IconAutomaticGearbox } from "@tabler/icons-react";
+import { Clock12Icon, LucideFuel, User2Icon } from "lucide-react";
 import Link from "next/link";
 import CurrencyFormater from "../CurrencyFormater";
 // const fetchDatas = async () => {
@@ -61,8 +56,10 @@ async function Items({ Cars }) {
             </span>
             <div className="grid grid-cols-2 items-center capitalize justify-start gap-2 mt-2 text-zinc-700">
               <span className="flex gap-1 items-center text-sm font-semibold space-x-2">
-                <IconRoadOff />{" "}
-                {car?.mileage === 0 ? "new" : car?.mileage + " " + "mil"}
+                <Clock12Icon />
+                {car?.mileage === 0
+                  ? "0" + "mile"
+                  : car?.mileage + " " + "mile"}
               </span>
               <span className="flex gap-1 items-center text-sm font-semibold">
                 <IconAutomaticGearbox /> {car.transmission}

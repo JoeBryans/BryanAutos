@@ -8,29 +8,21 @@ import { Slider } from "./ui/slider";
 import { DualRangeSlider } from "./ui/dual-slider";
 
 const SideFilter = ({ searchParam }) => {
+  // console.log("side filter", searchParam);
+
   const [formData, setFormData] = useState({
     keywords: searchParam?.keywords || "",
     make: searchParam?.make || "",
-    // model: searchParam.model || "",
+    model: searchParam?.model || "",
     bodyType: searchParam?.bodyType || "",
     price: searchParam?.price || 0,
     year: searchParam?.year || 0,
   });
-  // useEffect(() => {
-  //   const make = searchParam.make;
-  //   const model = searchParam.model;
-  //   const bodyType = searchParam.bodyType;
-  //   const price = searchParam.price;
-  //   const year = searchParam.year;
-  //   setFormData({
-  //     make: make || "",
-  //     model: model || "",
-  //     bodyType: bodyType?.length > 0 ? bodyType : "",
-  //     price: price || 0,
-  //     year: year || 0,
-  //   });
-  // }, []);
-  console.log("side filter", formData);
+  const { keywords, make, model, bodyType, price, year } = formData;
+
+  console.log("side form data", formData);
+
+ 
   const router = useRouter();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,7 +51,7 @@ const SideFilter = ({ searchParam }) => {
               type="text"
               name="keywords"
               id="keywords"
-              value={formData?.keywords}
+              value={keywords}
               onChange={handleChange}
               placeholder="Keywords"
             />
@@ -68,12 +60,12 @@ const SideFilter = ({ searchParam }) => {
             <select
               name="make"
               id="make"
-              value={formData?.make}
+              value={make}
               onChange={handleChange}
               className="w-full md:w-[180px] border-2 p-1.5 rounded-md"
             >
               <option value="All">All</option>
-              <option value="volvo">Volvo</option>
+              {/* <option value={make}>{make}</option> */}
               <option value="saab">Saab</option>
               <option value="mercedes">Mercedes</option>
               <option value="audi">Audi</option>
@@ -84,7 +76,7 @@ const SideFilter = ({ searchParam }) => {
               <h2>Model</h2>
               <Input
                 type="text"
-                value={formData?.model}
+                value={model}
                 name="model"
                 id="model"
                 onChange={handleChange}
@@ -94,7 +86,7 @@ const SideFilter = ({ searchParam }) => {
             <h2>Body</h2>
             <select
               name="body"
-              value={formData?.body}
+              value={bodyType}
               id="body"
               onChange={handleChange}
               className="w-full md:w-[180px] border-2 p-1.5 rounded-md"
