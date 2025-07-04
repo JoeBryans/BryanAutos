@@ -77,9 +77,7 @@ const Make = () => {
     console.log("selected", selected);
     async function fetchDatas() {
       try {
-        const res = await fetch(
-          `http://localhost:3000/api/getByMake?make=${selected}`
-        );
+        const res = await fetch(`/api/getByMake?make=${selected}`);
         const data = await res.json();
         setCarMake(data);
       } catch (error) {
