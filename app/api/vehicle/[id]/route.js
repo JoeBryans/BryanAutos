@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function GET(req, { params }) {
+export async function GET( { params }) {
   try {
     const { id } = await params;
     const car = await prisma.car.findUnique({
