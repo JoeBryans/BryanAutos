@@ -10,8 +10,9 @@ import { SkeletonCard, SkeletonImage } from "@/components/ui/Loader";
 const Page = async ({ params }) => {
   const { id } = await params;
   const carId = id.split("-")[3];
-  // const url = process.env.NEXT_PUBLIC_BASE_URL;
-  const url = "https://bryan-autos.vercel.app";
+  console.log("id", carId);
+  const url = process.env.NEXT_PUBLIC_BASE_URL;
+  // const url = "https://bryan-autos.vercel.app";
   const res = await fetch(`${url}/api/vehicle/${carId}`);
   const data = await res.json();
   const make = data?.make;
