@@ -106,7 +106,7 @@ const CarCard = ({ data }) => {
 
         <Dialog className="w-full">
           <DialogTrigger>
-            <Card className={"my-2"}>
+            <Card className={"my-2 max-w-lg w-full"}>
               <CardContent className="flex flex-col items-start justify-start gap-1 ">
                 <h1 className="text-2xl uppercase font-bold text-zinc-700 ">
                   loan repayment calculator
