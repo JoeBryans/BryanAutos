@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import parse from "html-react-parser";
 import { Router } from "next/router";
 import { useRouter } from "next/navigation";
@@ -23,7 +23,8 @@ import Link from "next/link";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import EMICalculator from "./EMI-Calculator";
 
-const CarCard = ({ data }) => {
+const CarCard = ({ carId }) => {
+  const [data, setData] = React.useState({});
   const [image, setImage] = React.useState("");
   const router = useRouter();
   let external_color = data?.external_color?.toLowerCase();
@@ -31,7 +32,18 @@ const CarCard = ({ data }) => {
   const iscolor = external_color?.replace(/\s+/g, "");
   let interior_color = data?.interior_color?.toLowerCase();
   const interior = interior_color?.replace(/\s+/g, "");
-
+  useEffect(() => {
+    const fetchCar = async () => {
+      try {
+        const res = await fetch(`/api/vehicle/${carId}`);
+        const respond = await res.json();
+        setData(respond);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCar();
+  }, []);
   return (
     <div className="w-full flex flex-wrap items-start justify-start gap-8">
       {/* <div className="max-w-3xl flex flex-col items-start justify-start gap-8"> */}
@@ -106,7 +118,7 @@ const CarCard = ({ data }) => {
 
         <Dialog className="w-full">
           <DialogTrigger>
-            <Card className={"my-2 max-w-lg w-full"}>
+            <Card className={"my-2  w-[500px]"}>
               <CardContent className="flex flex-col items-start justify-start gap-1 ">
                 <h1 className="text-2xl uppercase font-bold text-zinc-700 ">
                   loan repayment calculator

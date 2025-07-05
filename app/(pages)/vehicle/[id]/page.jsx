@@ -33,7 +33,7 @@ const Page = async ({ params }) => {
             </div>
           }
         >
-          <CarCard data={data} />
+          <CarCard carId={carId} />
           <RelatedCars relatedCars={related} />
 
           {/* <div className="flex flex-col space-y-4 mx-w-4xl w-full h-[50vh] ">
